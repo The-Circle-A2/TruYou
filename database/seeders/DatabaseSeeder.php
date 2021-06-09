@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::delete();
+        User::query()->delete();
 
         $user = new User();
         $user->email = 'b.fijneman@designone.nl';
