@@ -14,15 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::truncate();
+
         $user = new User();
         $user->email = 'b.fijneman@designone.nl';
-        $user->master_password = 'b.fijneman';
+        $user->master_password = hash("sha512", 'b.fijneman');
         $user->name = 'Bart Fijneman';
         $user->save();
 
         $user = new User();
         $user->email = 'w.molhoek@designone.nl';
-        $user->master_password = 'w.molhoek';
+        $user->master_password = hash("sha512", 'w.molhoek');
         $user->name = 'Wouter molhoek';
         $user->save();
     }
