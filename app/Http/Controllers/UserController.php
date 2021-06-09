@@ -62,6 +62,8 @@ class UserController extends Controller
         try {
             $decoded = (array) JWT::decode($secret_public_key, $user->master_password, ['HS256']);
 
+            var_dump($decoded);
+
             $publicKey = $decoded['public_key'];
         }
         catch(\Exception $exception) {
