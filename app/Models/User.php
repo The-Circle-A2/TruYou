@@ -8,13 +8,8 @@ class User extends Authenticatable
 {
 
     protected $fillable = [
-        'email',
-        'master_password',
-        'name',
-    ];
-
-    protected $hidden = [
-        'master_password'
+        'username',
+        'public_key'
     ];
 
 }
