@@ -22,6 +22,7 @@ class Controller extends BaseController
         $signature = $privateKey->encrypt(hash('sha256', $response->getContent().$timestamp, true));
 
         return $response->header('X-signature', base64_encode($signature))
+            ->header("Access-Control-Expose-Headers", "X-signature, X-timestamp")
             ->header('X-timestamp', $timestamp);
     }
 
