@@ -4,30 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Crypto\Rsa\PrivateKey;
 
 class UserController extends Controller
 {
+
+    public function list(Request $request) {
+
+        $users = User::pluck('username');
+
+        $this->log('[TRUYOU] Get users');
+
+        return $this->returnResponse(response()->json($users));
+    }
 
     public function get(Request $request, $username) {
 
         $user = User::where('username', $username)
             ->first();
 
-        if($user == null) {
-            $response = response()->json(['error' => 'User not found'], 404);
-        }
-        else {
-            $response = response()->json($user);
-        }
+        if($user == null) return $this->returnResponse(response()->json(['error' => 'User not found'], 404));
 
-        $timestamp = time();
-
-        $privateKey = PrivateKey::fromString(env('PRIVATE_KEY'));
-        $signature = $privateKey->encrypt(hash('sha256', $response->getContent().$timestamp));
-
-        return $response->header('X-signature', base64_encode($signature))
-            ->header('X-timestamp', $timestamp);
+        $this->log('[TRUYOU] Get user ' . $username);
+        return $this->returnResponse(response()->json($user));
     }
 
 }
