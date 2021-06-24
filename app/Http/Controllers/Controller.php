@@ -19,7 +19,7 @@ class Controller extends BaseController
         $timestamp = time();
 
         $privateKey = PrivateKey::fromString(env('PRIVATE_KEY'));
-        $signature = $privateKey->encrypt(hash('sha256', $response->getContent().$timestamp));
+        $signature = $privateKey->encrypt(hash('sha256', $response->getContent().$timestamp, true));
 
         return $response->header('X-signature', base64_encode($signature))
             ->header('X-timestamp', $timestamp);
@@ -30,9 +30,7 @@ class Controller extends BaseController
         $privateKey = PrivateKey::fromString(env('PRIVATE_KEY'));
         $timestamp = time();
 
-        var_dump($privateKey->encrypt(hash('sha256', $message.$timestamp)));
-
-        $signature = base64_encode($privateKey->encrypt(hash('sha256', $message.$timestamp)));
+        $signature = base64_encode($privateKey->encrypt(hash('sha256', $message.$timestamp, true)));
 
         $log = [
             'message' => $message,
@@ -40,15 +38,10 @@ class Controller extends BaseController
             'timestamp' => $timestamp
         ];
 
-        var_dump($log);
-
         $client = new Client();
         $res = $client->post(env('LOG_URL'), [
             RequestOptions::JSON => $log
         ]);
-
-        echo $res->getStatusCode(); // 200
-        echo $res->getBody(); // { "type": "User", ....
     }
 
 }

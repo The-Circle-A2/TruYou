@@ -22,9 +22,10 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
+        $this->log('[TRUYOU] Get user ' . $username);
+
         if($user == null) return $this->returnResponse(response()->json(['error' => 'User not found'], 404));
 
-        $this->log('[TRUYOU] Get user ' . $username);
         return $this->returnResponse(response()->json($user));
     }
 
